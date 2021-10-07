@@ -18,10 +18,10 @@ class DBlib:
 		"""
 		Face conectiunea intre baza de date
 		"""
-		self.mydb = mysql.connector.connect(host=self.host, user=self.user, password=self.password, database=self.database)
+		self.mydb = mysql.connector.connect(host=self.host, user=self.user, password=self.password, database=self.database, port=3306)
 		self.mycursor = self.mydb.cursor()
 
-		self.mycursor.execute(f"USE {self.database}")
+		self.mycursor.execute(f"USE `{self.database}`")
 
 	# Return the names of all tables from database
 	def table_names(self) -> list:
@@ -129,6 +129,26 @@ class DBlib:
 		Innoieste un rand din tabel
 		"""
 		sql = f"UPDATE `{table}` SET `{change_list[0]}` = '{change_list[1]}' WHERE `Id` = {row_id}"
+		self.mycursor.execute(sql)
+		self.mydb.commit()
+
+	def multiple_update(self, table: str, row_id: int, indexes: list, values: list):
+		"""
+		Actualizeaza un sir de chei si valori, lucreaza pentru orice baza de date
+		"""
+		sql_content = ''
+		ind = 0
+		if len(indexes) != len(values):
+			print('Indexes does not match with values')
+
+		while ind < len(values):
+			if ind < len(values) - 1:
+				sql_content += f"`{indexes[ind]}` = '{values[ind]}', "
+			elif ind == len(values) - 1:
+				sql_content += f"`{indexes[ind]}` = '{values[ind]}' "
+			ind += 1
+
+		sql = f"UPDATE `{table}` SET {sql_content} WHERE `Id` = {row_id}"
 		self.mycursor.execute(sql)
 		self.mydb.commit()
 
