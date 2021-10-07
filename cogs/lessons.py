@@ -1,5 +1,7 @@
-import discord
+import re
 import main
+import discord
+import datetime
 from discord.ext import commands
 
 # Importarea fisierelor
@@ -11,6 +13,7 @@ class Lessons(commands.Cog):
 
 	def __init__(self, client):
 		self.client = client
+		self.database = main.vesela_lib
 
 	# //////////////////////
 	@staticmethod
@@ -222,6 +225,43 @@ class Lessons(commands.Cog):
 			# Embed
 			embed = main.embeded(ctx, "Zi de odihna", message, discord.Colour.light_grey())
 			await msg.edit(embed=embed)
+
+	# Schimbarea orarului
+	@commands.command(aliases=['edo'])
+	async def editare_date_orar(self, ctx, args: str = ''):
+		setting_id = 2
+		durata_lectiei = 0
+		durata_pauzei = 0
+		durata_pauzei_mare = 0
+		de_la = 0
+		pana_la = 0
+		starea = 'default'
+		settings = re.findall(r'[A-Z]+:<.*>', args)
+		for setting in settings:
+			name, value = setting.split(':')
+			if name == 'l':
+				durata_lectiei = value
+			elif name == 'p':
+				durata_pauzei = value
+			elif name == 'pm':
+				durata_pauzei_mare = value
+			elif name == 'dl':
+				dd, mm, yy = value.split('_')
+				de_la = datetime.date(day=dd, month=mm, year=yy)
+			elif name == 'pl':
+				dd, mm, yy = value.split('_')
+				pana_la = datetime.date(day=dd, month=mm, year=yy)
+
+		# Updating
+		keys = ['DurataLectiei', 'DurataPauzei', 'DurataPauzeiMare', 'DeLa', 'PanaLa', 'Starea']
+		values = [durata_lectiei, durata_pauzei, durata_pauzei_mare, de_la, pana_la, starea]
+		change_list = [keys, values]
+		self.database.update('OrarulSunetelor', setting_id, change_list)
+
+		message = f'''Orarul a fost adaugat, incurand se vor actualiza datele\n
+			El va fi aplicat in functiune de pe data de *{de_la}*, modul de functionare *{starea}*'''
+		# Embed
+		embed = main.embeded(ctx, "Success", message, discord.Colour.green())
 
 
 def setup(client):
