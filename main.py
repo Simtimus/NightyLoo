@@ -13,7 +13,9 @@ from discord_components import DiscordComponents, Button, ButtonStyle, Select, S
 import database
 import lessons_config as l_conf
 import config_handler as conf_h
-#import keep_alive
+
+if conf_h.is_local_run == False:
+	import keep_alive
 
 # Initializarea discord
 comm_prefix = '.'
@@ -95,5 +97,6 @@ for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
-#keep_alive.keep_alive()
+if conf_h.is_local_run == False:
+	keep_alive.keep_alive()
 client.run(conf_h.TOKEN)

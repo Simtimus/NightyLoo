@@ -1,4 +1,3 @@
-import re
 import main
 import discord
 import datetime
@@ -229,39 +228,48 @@ class Lessons(commands.Cog):
 	# Schimbarea orarului
 	@commands.command(aliases=['edo'])
 	async def editare_date_orar(self, ctx, args: str = ''):
-		setting_id = 2
 		durata_lectiei = 0
 		durata_pauzei = 0
 		durata_pauzei_mare = 0
 		de_la = 0
 		pana_la = 0
-		starea = 'default'
-		settings = re.findall(r'[A-Z]+:<.*>', args)
+		starea = 'active'
+		settings = args.split(';')
+
 		for setting in settings:
 			name, value = setting.split(':')
 			if name == 'l':
-				durata_lectiei = value
+				durata_lectiei = int(value)
 			elif name == 'p':
-				durata_pauzei = value
+				durata_pauzei = int(value)
 			elif name == 'pm':
-				durata_pauzei_mare = value
+				durata_pauzei_mare = int(value)
 			elif name == 'dl':
-				dd, mm, yy = value.split('_')
-				de_la = datetime.date(day=dd, month=mm, year=yy)
+				dd, mm, yy = value.split('.')
+				de_la = datetime.date(day=int(dd), month=int(mm), year=int(yy))
 			elif name == 'pl':
-				dd, mm, yy = value.split('_')
-				pana_la = datetime.date(day=dd, month=mm, year=yy)
+				dd, mm, yy = value.split('.')
+				pana_la = datetime.date(day=int(dd), month=int(mm), year=int(yy))
+			elif name == 'st':
+				starea = value
+
+		if starea == 'default':
+			setting_id = 1
+		else:
+			setting_id = 2
 
 		# Updating
 		keys = ['DurataLectiei', 'DurataPauzei', 'DurataPauzeiMare', 'DeLa', 'PanaLa', 'Starea']
 		values = [durata_lectiei, durata_pauzei, durata_pauzei_mare, de_la, pana_la, starea]
 		change_list = [keys, values]
+		self.database.connect()
 		self.database.update('OrarulSunetelor', setting_id, change_list)
 
 		message = f'''Orarul a fost adaugat, incurand se vor actualiza datele\n
 			El va fi aplicat in functiune de pe data de *{de_la}*, modul de functionare *{starea}*'''
 		# Embed
 		embed = main.embeded(ctx, "Success", message, discord.Colour.green())
+		await ctx.channel.send(embed=embed)
 
 
 def setup(client):
