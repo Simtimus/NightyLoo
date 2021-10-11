@@ -1,6 +1,4 @@
-import re
 import main
-import pytz
 import discord
 import datetime
 from discord.ext import commands
@@ -230,20 +228,21 @@ class Lessons(commands.Cog):
 	# Schimbarea orarului
 	@commands.command(aliases=['edo'])
 	async def editare_date_orar(self, ctx, args: str = ''):
+		await ctx.channel.purge(limit=1)
 		durata_lectiei = 0
 		durata_pauzei = 0
 		durata_pauzei_mare = 0
-		de_la = datetime.datetime.now(pytz.timezone("Europe/Chisinau"))
-		pana_la = datetime.datetime.now(pytz.timezone("Europe/Chisinau"))
+		de_la = datetime.date.today()
+		pana_la = datetime.date.today()
 		starea = 'active'
 		settings = args.split(';')
 
+		name = ''
+		value = ''
 		for setting in settings:
-			verify = re.findall('[a-z]+:.*;', setting)
-			if setting in verify:
+			if setting != '':
 				name, value = setting.split(':')
-			else:
-				continue
+
 			if name == 'l':
 				durata_lectiei = int(value)
 			elif name == 'p':
@@ -269,6 +268,7 @@ class Lessons(commands.Cog):
 		values = [durata_lectiei, durata_pauzei, durata_pauzei_mare, de_la, pana_la, starea]
 
 		self.database.connect()
+		self.database.multiple_update('OrarulSunetelor', setting_id, keys, values)
 
 		message = f'''Orarul a fost adaugat, incurand se vor actualiza datele\n
 			El va fi aplicat in functiune de pe data de *{de_la}*, modul de functionare *{starea}*'''

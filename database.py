@@ -18,7 +18,7 @@ class DBlib:
 		"""
 		Face conectiunea intre baza de date
 		"""
-		self.mydb = mysql.connector.connect(host=self.host, user=self.user, password=self.password, database=self.database, port=3306)
+		self.mydb = mysql.connector.connect(host=self.host, user=self.user, password=self.password, database=self.database)
 		self.mycursor = self.mydb.cursor()
 
 		self.mycursor.execute(f"USE `{self.database}`")
