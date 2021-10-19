@@ -74,7 +74,7 @@ async def on_ready():
 	# Calculating exact time
 	while True:
 		date_today = datetime.datetime.now(pytz.timezone("Europe/Chisinau"))
-		num_of_weeks = date_today.isocalendar().week
+		num_of_weeks = date_today.isocalendar()[1]
 		if num_of_weeks % 2 == 0:
 			saptamana = 'Para'
 		else:
