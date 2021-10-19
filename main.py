@@ -90,7 +90,7 @@ async def on_ready():
 		timpul_exact = day.hour * 3600 + day.minute * 60 + day.second
 		current_date = day.weekday()
 		ziua_saptamanii = l_conf.zilele[current_date]
-		await asyncio.sleep(10)
+		await asyncio.sleep(1000)
 
 
 for filename in os.listdir('./cogs'):
