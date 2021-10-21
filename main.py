@@ -1,6 +1,5 @@
 # Importarea librariilor
 import os
-import math
 import pytz
 import discord
 import asyncio
