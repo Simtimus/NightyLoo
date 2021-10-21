@@ -14,13 +14,12 @@ import database
 import lessons_config as l_conf
 import config_handler as conf_h
 
-if conf_h.is_local_run == False:
+if conf_h.is_local_run is False:
 	import keep_alive
 
 # Initializarea discord
-comm_prefix = '.'
 intents = discord.Intents.all()
-client = commands.Bot(command_prefix=comm_prefix, case_insensitive=True, intents=intents)
+client = commands.Bot(command_prefix=conf_h.prefix, case_insensitive=True, intents=intents)
 
 # Variabile principale
 global saptamana
@@ -52,6 +51,10 @@ def embeded(ctx, title, description, colour=discord.Colour.blue(), fields=None):
 
 	return embed
 
+
+# //////////////////////////////////
+async def lessons_config_update():
+	pass
 
 # //////////////////////////////////
 
@@ -97,6 +100,6 @@ for filename in os.listdir('./cogs'):
 	if filename.endswith('.py'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
-if conf_h.is_local_run == False:
+if conf_h.is_local_run is False:
 	keep_alive.keep_alive()
 client.run(conf_h.TOKEN)

@@ -1,5 +1,6 @@
 import os
 
+prefix = '.'
 TOKEN = ''
 vesela_host = ''
 vesela_user = ''
@@ -15,6 +16,7 @@ is_local_run = False
 if 'local_config.py' in os.listdir('.'):
 	import local_config
 	is_local_run = True
+	prefix = '_'
 
 	TOKEN = local_config.TOKEN
 	vesela_host = local_config.vesela_host
