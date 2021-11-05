@@ -51,13 +51,13 @@ class Lessons(commands.Cog):
 				return lectia, ramas, verify
 		return lectia, ramas, verify
 
-	def printable(self, saptamana, ziua, lectia, verify, ramas):
-		obiectul = 0
-		expose = []
+	def printable(self, saptamana, ziua, lectia, verify, ramas) -> str:
 		signature = ''
+		message = f'Saptamana: {saptamana} | ziua: {ziua}\n'
 
-		while obiectul < 4:
-			valoare = conf.orarul[0][obiectul]
+		for element in conf.time_table[main.saptamana][main.ziua_saptamanii]:
+			object_index = conf.time_table[main.saptamana][main.ziua_saptamanii].index(element)
+			valoare = conf.orarul[0][object_index]
 			inceput, sfarsit = valoare.split(' - ')
 			if verify == 'lectie':
 				signature = f'Lectie, a ramas *{ramas // 60}:{ramas % 60}*'
@@ -66,22 +66,17 @@ class Lessons(commands.Cog):
 					conf.orarul[0][lectia + 1 if lectia < 3 else 3])
 				signature = f'Pauza, a ramas *{timp_x - main.timpul} minute*'
 
-			if obiectul == lectia:
-				expose.append(f'**{obiectul + 1}. {conf.time_table[main.saptamana][main.ziua_saptamanii][obiectul]}** - {signature}\n **{inceput} - {sfarsit}**')
+			if object_index == lectia:
+				message += f'**{object_index + 1}. {element}** - {signature}\n **{inceput} - {sfarsit}**\n'
 			else:
-				expose.append(f'{obiectul + 1}. {conf.time_table[main.saptamana][main.ziua_saptamanii][obiectul]}\n{inceput} - {sfarsit}')
-			obiectul += 1
-		message = f'Saptamana: {saptamana} | ziua: {ziua}\n{expose[0]}\n{expose[1]}\n{expose[2]}\n{expose[3]}\n'
+				message += f'{object_index + 1}. {element}\n{inceput} - {sfarsit}\n'
 		return message
 
 	@staticmethod
-	def schedule_format(saptamana: str, ziua: str):
-		textul_0 = conf.time_table[saptamana][ziua][0]
-		textul_1 = conf.time_table[saptamana][ziua][1]
-		textul_2 = conf.time_table[saptamana][ziua][2]
-		textul_3 = conf.time_table[saptamana][ziua][3]
-
-		message = f'Saptamana: {saptamana} | ziua: {ziua}\n1. {textul_0}\n2. {textul_1}\n3. {textul_2}\n4. {textul_3}\n'
+	def schedule_format(saptamana: str, ziua: str) -> str:
+		message = f'Saptamana: {saptamana} | ziua: {ziua}\n'
+		for element in conf.time_table[saptamana][ziua]:
+			message += f'{conf.time_table[saptamana][ziua].index(element) + 1}. {element}\n'
 		return message
 
 	# //////////////////////
