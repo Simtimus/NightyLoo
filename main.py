@@ -52,8 +52,28 @@ def embeded(ctx, title, description, colour=discord.Colour.blue(), fields=None):
 
 
 # //////////////////////////////////
-async def lessons_config_update():
-	pass
+def lessons_config_update():
+	vesela_lib.connect()
+	default = vesela_lib.read_rows('OrarulSunetelor')
+	custom = vesela_lib.read_rows('OrarulSunetelor', 2, 2)
+	time = 480
+
+	if custom[0][4] <= datetime.date.today() <= custom[0][5]:
+		lesson = int(custom[0][1])
+		pause = int(custom[0][2])
+		big_pause = int(custom[0][3])
+	else:
+		lesson = int(default[0][1])
+		pause = int(default[0][2])
+		big_pause = int(default[0][3])
+
+	element = 0
+	while element < len(l_conf.orarul[0]):
+		ora_inceput = f'{time//60}:{(time%60 if len(str(time%60)) == 2 else "0" + str(time%60))}'
+		time += lesson
+		ora_sfarsit = f'{time//60}:{(time%60 if len(str(time%60)) == 2 else "0" + str(time%60))}'
+		l_conf.orarul[0][element] = f'{ora_inceput} - {ora_sfarsit}'
+		element += 1
 
 # //////////////////////////////////
 
@@ -71,6 +91,7 @@ async def on_ready():
 	global timpul_exact
 
 	current_date = 0
+	timpul = 0
 
 	DiscordComponents(client)
 	# Calculating exact time
@@ -85,6 +106,9 @@ async def on_ready():
 		saptamana_v = 'Para'
 		if saptamana == 'Para':
 			saptamana_v = 'Impara'
+
+		if timpul == 700 or timpul == 0:
+			lessons_config_update()
 
 		day = datetime.datetime.utcnow()
 		day += datetime.timedelta(hours=3)
