@@ -222,6 +222,7 @@ class Lessons(commands.Cog):
 
 	# Schimbarea orarului
 	@commands.command(aliases=['edo'])
+	@commands.has_permissions(kick_members=True)
 	async def editare_date_orar(self, ctx, args: str = ''):
 		await ctx.channel.purge(limit=1)
 		durata_lectiei = 0

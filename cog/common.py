@@ -14,11 +14,13 @@ class Common(commands.Cog):
 
 	# Chat clear command
 	@commands.command(aliases=['purge', 'clean', 'cls'])
+	@commands.has_permissions(kick_members=True)
 	async def clear(self, ctx, amount=2):
 		await ctx.channel.purge(limit=amount)
 
 	# Drop down select
 	@commands.command()
+	@commands.has_permissions(kick_members=True)
 	async def drop(self, ctx):
 		so_listen = main.SelectOption(label='Asculta pe ', value='Aculta', description='Aici este ceea ce asculta')
 		activity_select = main.Select(placeholder='Alegeti tipul de acivitate:', options=[so_listen])
@@ -42,6 +44,7 @@ class Common(commands.Cog):
 
 	# Create a embed message
 	@commands.command(aliases=['ann'])
+	@commands.has_permissions(kick_members=True)
 	async def announcement(self, ctx, arguments):
 		await ctx.channel.purge(limit=1)
 
