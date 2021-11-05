@@ -95,9 +95,9 @@ async def on_ready():
 		await asyncio.sleep(1000)
 
 
-for filename in os.listdir('./cogs'):
+for filename in os.listdir('cog'):
 	if filename.endswith('.py'):
-		client.load_extension(f'cogs.{filename[:-3]}')
+		client.load_extension(f'cog.{filename[:-3]}')
 
 if conf_h.is_local_run is False:
 	keep_alive.keep_alive()
