@@ -1,6 +1,6 @@
 import os
 
-prefix = '.'
+prefix = '$'
 TOKEN = ''
 vesela_host = ''
 vesela_user = ''
