@@ -4,14 +4,14 @@ time_table = {
 		'Marti': ['Informatica', 'Bazele L. D.', 'Ed. p. soc.', 'Fizica'],
 		'Miercuri': ['Matematica', 'Electronica I. 1', 'L. straina', 'L. romana', 'Ed. fizica'],
 		'Joi': ['N/A', 'L. romana', 'Electronica I. 1'],
-		'Vineri': ['N/A', 'Masini E. A.', 'Fizica',  'Masini E. A.'],
+		'Vineri': ['N/A', 'Masini E. A.', 'Fizica'],
 	},
 	'Para': {
 		'Luni': ['Firma E. 2', 'Firma E. 2', 'Electronica I. 1', 'Matematica'],
 		'Marti': ['Informatica', 'Bazele L. D.', 'Geografia'],
 		'Miercuri': ['Matematica', 'Electronica I. 1', 'L. straina', 'L. romana', 'Ed. fizica'],
 		'Joi': ['D. P.', 'Istoria', 'Electronica I. 1'],
-		'Vineri': ['N/A', 'Masini E. A.', 'Fizica',  'Masini E. A.'],
+		'Vineri': ['N/A', 'Masini E. A.', 'Fizica'],
 	},
 }
 

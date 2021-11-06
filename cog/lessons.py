@@ -155,8 +155,9 @@ class Lessons(commands.Cog):
 	@commands.command()
 	async def lesson(self, ctx):
 
+		numarul_orelor = len(conf.time_table[main.saptamana][main.ziua_saptamanii])
 		before_begin = self.calcularea_timpului(conf.orarul[0][0], 1)
-		first_half = self.calcularea_timpului(conf.orarul[0][-1], 2)
+		first_half = self.calcularea_timpului(conf.orarul[0][numarul_orelor - 1], 2)
 		second_half = self.calcularea_timpului(conf.orarul[1][-1], 2)
 
 		timpul = main.timpul
