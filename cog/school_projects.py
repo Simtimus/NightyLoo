@@ -17,7 +17,7 @@ class SchoolProjects(commands.Cog):
 
 	# Resetarea starii elevilor
 	@commands.command()
-	@commands.has_permissions(kick_members=True)
+	@commands.has_role('Admin')
 	async def reset(self, ctx):
 		await ctx.channel.purge(limit=1)
 		self.mylib.connect()
@@ -46,7 +46,7 @@ class SchoolProjects(commands.Cog):
 
 	# Randul de facut deserviciu
 	@commands.command()
-	@commands.has_permissions(kick_members=True)
+	@commands.has_role('Admin')
 	async def verify(self, ctx):
 		await ctx.channel.purge(limit=1)
 		self.mylib.connect()
@@ -124,7 +124,7 @@ class SchoolProjects(commands.Cog):
 
 	# Randul de facut deserviciu
 	@commands.command()
-	@commands.has_permissions(kick_members=True)
+	@commands.has_role('Admin')
 	async def duty(self, ctx):
 		await ctx.channel.purge(limit=1)
 		self.mylib.connect()
