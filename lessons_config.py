@@ -1,17 +1,17 @@
 time_table = {
 	'Impara': {
-		'Luni': ['Ed. p. soc', 'L. romana', 'Fizica', 'Ed. fizica'],
-		'Marti': ['Firma E. 2', 'Firma E. 2', 'Electronica I. 1', 'N/A'],
-		'Miercuri': ['Bazele L. D.', 'Matematica', 'L. engleza', 'Informatica'],
-		'Joi': ['Fizica', 'Electronica I. 1', 'D. P.', 'N/A'],
-		'Vineri': ['L. romana', 'Electronica I. 1', 'Matematica',  'Masini E. A.'],
+		'Luni': ['Firma E. 2', 'Firma E. 2', 'Electronica I. 1', 'Matematica'],
+		'Marti': ['Informatica', 'Bazele L. D.', 'Ed. p. soc.', 'Fizica'],
+		'Miercuri': ['Matematica', 'Electronica I. 1', 'L. straina', 'L. romana', 'Ed. fizica'],
+		'Joi': ['N/A', 'L. romana', 'Electronica I. 1'],
+		'Vineri': ['N/A', 'Masini E. A.', 'Fizica',  'Masini E. A.'],
 	},
 	'Para': {
-		'Luni': ['Geografia', 'L. romana', 'Fizica', 'Ed. fizica'],
-		'Marti': ['Firma E. 2', 'Firma E. 2', 'Electronica I. 1', 'N/A'],
-		'Miercuri': ['Bazele L. D.', 'Matematica', 'L. engleza', 'Informatica'],
-		'Joi': ['Istoria', 'Electronica I. 1', 'D. P.', 'N/A'],
-		'Vineri': ['Matematica', 'Electronica I. 1', 'Matematica',  'Masini E. A.'],
+		'Luni': ['Firma E. 2', 'Firma E. 2', 'Electronica I. 1', 'Matematica'],
+		'Marti': ['Informatica', 'Bazele L. D.', 'Geografia'],
+		'Miercuri': ['Matematica', 'Electronica I. 1', 'L. straina', 'L. romana', 'Ed. fizica'],
+		'Joi': ['D. P.', 'Istoria', 'Electronica I. 1'],
+		'Vineri': ['N/A', 'Masini E. A.', 'Fizica',  'Masini E. A.'],
 	},
 }
 

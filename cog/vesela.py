@@ -11,6 +11,7 @@ class Vesela(commands.Cog):
 
 	# Visualizarea tuturor
 	@commands.command()
+	@commands.has_role('Admin')
 	async def tabs(self, ctx):
 		self.mylib.connect()
 
@@ -26,6 +27,7 @@ class Vesela(commands.Cog):
 
 	# Adaugarea in baza de date vesela spalata
 	@commands.command(aliases=['ve', 'v'])
+	@commands.has_role('Admin')
 	async def vesela(self, ctx, comment=None, status=None):
 		self.mylib.connect()
 
@@ -123,6 +125,7 @@ class Vesela(commands.Cog):
 
 	# Get all rows from a table
 	@commands.command(aliases=['rt'])
+	@commands.has_role('Admin')
 	async def read_table(self, ctx, table):
 		self.mylib.connect()
 
@@ -139,6 +142,7 @@ class Vesela(commands.Cog):
 
 	# Nexts turn
 	@commands.command(aliases=['vu'])
+	@commands.has_role('Admin')
 	async def vesela_urmatorul(self, ctx, table='Vesela'):
 		self.mylib.connect()
 		await ctx.channel.purge(limit=1)
