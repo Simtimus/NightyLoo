@@ -111,7 +111,7 @@ async def on_ready():
 			lessons_config_update()
 
 		day = datetime.datetime.utcnow()
-		day += datetime.timedelta(hours=3)
+		day += datetime.timedelta(hours=2)
 		timpul = day.hour * 60 + day.minute
 		timpul_exact = day.hour * 3600 + day.minute * 60 + day.second
 		current_date = day.weekday()
