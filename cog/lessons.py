@@ -54,9 +54,9 @@ class Lessons(commands.Cog):
 	def printable(self, saptamana, ziua, lectia, verify, ramas) -> str:
 		signature = ''
 		message = f'Saptamana: {saptamana} | ziua: {ziua}\n'
+		object_index = 0
 
 		for element in conf.time_table[main.saptamana][main.ziua_saptamanii]:
-			object_index = conf.time_table[main.saptamana][main.ziua_saptamanii].index(element)
 			valoare = conf.orarul[0][object_index]
 			inceput, sfarsit = valoare.split(' - ')
 			if verify == 'lectie':
@@ -70,13 +70,16 @@ class Lessons(commands.Cog):
 				message += f'**{object_index + 1}. {element}** - {signature}\n **{inceput} - {sfarsit}**\n'
 			else:
 				message += f'{object_index + 1}. {element}\n{inceput} - {sfarsit}\n'
+			object_index += 1
 		return message
 
 	@staticmethod
 	def schedule_format(saptamana: str, ziua: str) -> str:
 		message = f'Saptamana: {saptamana} | ziua: {ziua}\n'
+		elem_index = 1
 		for element in conf.time_table[saptamana][ziua]:
-			message += f'{conf.time_table[saptamana][ziua].index(element) + 1}. {element}\n'
+			message += f'{elem_index}. {element}\n'
+			elem_index += 1
 		return message
 
 	# //////////////////////
