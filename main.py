@@ -58,16 +58,16 @@ def lessons_config_update():
 	custom = vesela_lib.read_rows('OrarulSunetelor', 2, 2)
 	time = 480
 
-	# if custom[0][5] <= datetime.date.today() <= custom[0][6]:
-	lesson = int(custom[0][1])
-	pause = int(custom[0][2])
-	big_pause = int(custom[0][3])
-	overwrite = custom[0][4].split(';')
-	# else:
-	# 	lesson = int(default[0][1])
-	# 	pause = int(default[0][2])
-	# 	big_pause = int(default[0][3])
-	# 	overwrite = default[0][4].split(';')
+	if custom[0][5] <= datetime.date.today() <= custom[0][6]:
+		lesson = int(custom[0][1])
+		pause = int(custom[0][2])
+		big_pause = int(custom[0][3])
+		overwrite = custom[0][4].split(';')
+	else:
+		lesson = int(default[0][1])
+		pause = int(default[0][2])
+		big_pause = int(default[0][3])
+		overwrite = default[0][4].split(';')
 
 	over_dict = {}
 	if overwrite != ['']:
