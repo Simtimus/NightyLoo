@@ -1,5 +1,6 @@
 import main
 import discord
+import asyncio
 import datetime
 from discord.ext import commands
 
@@ -54,9 +55,9 @@ class Lessons(commands.Cog):
 	def printable(self, saptamana, ziua, lectia, verify, ramas) -> str:
 		signature = ''
 		message = f'Saptamana: {saptamana} | ziua: {ziua}\n'
+		object_index = 0
 
 		for element in conf.time_table[main.saptamana][main.ziua_saptamanii]:
-			object_index = conf.time_table[main.saptamana][main.ziua_saptamanii].index(element)
 			valoare = conf.orarul[0][object_index]
 			inceput, sfarsit = valoare.split(' - ')
 			if verify == 'lectie':
@@ -70,13 +71,16 @@ class Lessons(commands.Cog):
 				message += f'**{object_index + 1}. {element}** - {signature}\n **{inceput} - {sfarsit}**\n'
 			else:
 				message += f'{object_index + 1}. {element}\n{inceput} - {sfarsit}\n'
+			object_index += 1
 		return message
 
 	@staticmethod
 	def schedule_format(saptamana: str, ziua: str) -> str:
 		message = f'Saptamana: {saptamana} | ziua: {ziua}\n'
+		elem_index = 1
 		for element in conf.time_table[saptamana][ziua]:
-			message += f'{conf.time_table[saptamana][ziua].index(element) + 1}. {element}\n'
+			message += f'{elem_index}. {element}\n'
+			elem_index += 1
 		return message
 
 	# //////////////////////
@@ -154,8 +158,10 @@ class Lessons(commands.Cog):
 	# Lectia curenta
 	@commands.command()
 	async def lesson(self, ctx):
-
-		numarul_orelor = len(conf.time_table[main.saptamana][main.ziua_saptamanii])
+		
+		numarul_orelor = 1
+		if main.current_date < 5:
+			numarul_orelor = len(conf.time_table[main.saptamana][main.ziua_saptamanii])
 		before_begin = self.calcularea_timpului(conf.orarul[0][0], 1)
 		first_half = self.calcularea_timpului(conf.orarul[0][numarul_orelor - 1], 2)
 		second_half = self.calcularea_timpului(conf.orarul[1][-1], 2)
@@ -220,6 +226,81 @@ class Lessons(commands.Cog):
 			# Embed
 			embed = main.embeded(ctx, "Zi de odihna", message, discord.Colour.light_grey())
 			await msg.edit(embed=embed)
+
+# Lectia curenta
+	@commands.command()
+	async def live(self, ctx):
+		
+		numarul_orelor = 1
+		if main.current_date < 5:
+			numarul_orelor = len(conf.time_table[main.saptamana][main.ziua_saptamanii])
+		before_begin = self.calcularea_timpului(conf.orarul[0][0], 1)
+		first_half = self.calcularea_timpului(conf.orarul[0][numarul_orelor - 1], 2)
+		second_half = self.calcularea_timpului(conf.orarul[1][-1], 2)
+
+		timpul = main.timpul
+		current_date = main.current_date
+		day = main.day
+
+		# Embed
+		await ctx.channel.purge(limit=1)
+		message = ":x: If you see this message, it's probably from an error\nPlease report it!!"
+		embed = main.embeded(ctx, "Auto respond", message, discord.Colour.red())
+		msg = await ctx.send(embed=embed)
+
+		i = 0
+		anima = 0
+		first_lesson = None
+		if 0 <= main.current_date <= 4:
+			for i in range(4):
+				if conf.time_table[main.saptamana][main.ziua_saptamanii][i] != 'N/A':
+					first_lesson = conf.time_table[main.saptamana][main.ziua_saptamanii][i]
+					break
+		while True:
+			# definirea variabilelor necesare
+			if 0 <= timpul <= first_half:
+				anima = 0
+			elif first_half <= timpul <= second_half:
+				anima = 1
+			lectia, ramas, verify = self.multifunctional(anima)
+
+			# Text inainte de inceputul orelor
+			if 0 <= current_date <= 4 and timpul <= before_begin:
+
+				# Embed
+				message = f'La ora {day.ctime()} nu sunt lectii\nLectia {first_lesson} se va incepe peste {self.calcularea_timpului(conf.orarul[0][i], 1) - timpul} minute'
+				embed = main.embeded(ctx, "Inceputul orelor (LIVE)", message, 0xFFFF00)
+				await msg.edit(embed=embed)
+
+			# Text in decursul orelor
+			elif 0 <= current_date <= 4 and timpul <= first_half:
+
+				message = self.printable(main.saptamana, main.ziua_saptamanii, lectia, verify, ramas)
+				# Embed
+				embed = main.embeded(ctx, "In decursul orelor (LIVE)", message, discord.Colour.green())
+				await msg.edit(embed=embed)
+
+			# Text dupa sfarsitul orelor
+			elif 0 <= current_date < 4 and timpul >= first_half:
+				ziua_saptamanii_v = conf.zilele[(current_date + 1 if current_date != 4 else current_date)]
+
+				message = self.schedule_format(main.saptamana, ziua_saptamanii_v)
+
+				# Embed
+				embed = main.embeded(ctx, "Sfarsitul orelor", message, 0x00FFFF)
+				await msg.edit(embed=embed)
+				break
+
+			# Text in zilele de odihna
+			elif (5 <= current_date <= 6) or (current_date == 4 and timpul >= first_half):
+
+				message = self.schedule_format(main.saptamana_v, conf.zilele[0])
+
+				# Embed
+				embed = main.embeded(ctx, "Zi de odihna", message, discord.Colour.light_grey())
+				await msg.edit(embed=embed)
+				break
+			await asyncio.sleep(10)
 
 	# Schimbarea orarului
 	@commands.command(aliases=['edo'])

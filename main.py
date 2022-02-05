@@ -56,42 +56,24 @@ def lessons_config_update():
 	vesela_lib.connect()
 	default = vesela_lib.read_rows('OrarulSunetelor')
 	custom = vesela_lib.read_rows('OrarulSunetelor', 2, 2)
-	time = 480
+	timp = 480
 
-	# if custom[0][5] <= datetime.date.today() <= custom[0][6]:
-	lesson = int(custom[0][1])
-	pause = int(custom[0][2])
-	big_pause = int(custom[0][3])
-	overwrite = custom[0][4].split(';')
-	# else:
-	# 	lesson = int(default[0][1])
-	# 	pause = int(default[0][2])
-	# 	big_pause = int(default[0][3])
-	# 	overwrite = default[0][4].split(';')
-
-	over_dict = {}
-	if overwrite != ['']:
-		for element in overwrite:
-			if element != '':
-				key, value = element.split(':')
-				over_dict[key] = value
-
-	times = {}
-	i = 0
-	for i in range(6):
-		try:
-			times[str(i)] = over_dict[f'p{i}']
-		except KeyError:
-			times[str(i)] = pause
+	if custom[0][4] <= datetime.date.today() <= custom[0][5]:
+		lesson = int(custom[0][1])
+		pause = int(custom[0][2])
+		big_pause = int(custom[0][3])
+	else:
+		lesson = int(default[0][1])
+		pause = int(default[0][2])
+		big_pause = int(default[0][3])
 
 	element = 0
 	while element < len(l_conf.orarul[0]):
-		ora_inceput = f'{time // 60}:{(time % 60 if len(str(time % 60)) == 2 else "0" + str(time % 60))}'
-		time += lesson
-		ora_sfarsit = f'{time // 60}:{(time % 60 if len(str(time % 60)) == 2 else "0" + str(time % 60))}'
+		ora_inceput = f'{timp//60}:{(timp%60 if len(str(timp%60)) == 2 else "0" + str(timp%60))}'
+		timp += lesson
+		ora_sfarsit = f'{timp//60}:{(timp%60 if len(str(timp%60)) == 2 else "0" + str(timp%60))}'
 		l_conf.orarul[0][element] = f'{ora_inceput} - {ora_sfarsit}'
 		element += 1
-
 
 # //////////////////////////////////
 
@@ -110,6 +92,7 @@ async def on_ready():
 
 	current_date = 0
 	timpul = 0
+	update_times = [0,100, 200, 300, 400, 500, 600, 720]
 
 	DiscordComponents(client)
 	# Calculating exact time
@@ -124,12 +107,13 @@ async def on_ready():
 		saptamana_v = 'Para'
 		if saptamana == 'Para':
 			saptamana_v = 'Impara'
-
-		if timpul == 700 or timpul == 0:
-			lessons_config_update()
+		
+		if timpul in update_times:
+			# lessons_config_update()
+			pass
 
 		day = datetime.datetime.utcnow()
-		day += datetime.timedelta(hours=3)
+		day += datetime.timedelta(hours=2)
 		timpul = day.hour * 60 + day.minute
 		timpul_exact = day.hour * 3600 + day.minute * 60 + day.second
 		current_date = day.weekday()
