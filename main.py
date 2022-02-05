@@ -58,22 +58,40 @@ def lessons_config_update():
 	custom = vesela_lib.read_rows('OrarulSunetelor', 2, 2)
 	time = 480
 
-	if custom[0][4] <= datetime.date.today() <= custom[0][5]:
-		lesson = int(custom[0][1])
-		pause = int(custom[0][2])
-		big_pause = int(custom[0][3])
-	else:
-		lesson = int(default[0][1])
-		pause = int(default[0][2])
-		big_pause = int(default[0][3])
+	# if custom[0][5] <= datetime.date.today() <= custom[0][6]:
+	lesson = int(custom[0][1])
+	pause = int(custom[0][2])
+	big_pause = int(custom[0][3])
+	overwrite = custom[0][4].split(';')
+	# else:
+	# 	lesson = int(default[0][1])
+	# 	pause = int(default[0][2])
+	# 	big_pause = int(default[0][3])
+	# 	overwrite = default[0][4].split(';')
+
+	over_dict = {}
+	if overwrite != ['']:
+		for element in overwrite:
+			if element != '':
+				key, value = element.split(':')
+				over_dict[key] = value
+
+	times = {}
+	i = 0
+	for i in range(6):
+		try:
+			times[str(i)] = over_dict[f'p{i}']
+		except KeyError:
+			times[str(i)] = pause
 
 	element = 0
 	while element < len(l_conf.orarul[0]):
-		ora_inceput = f'{time//60}:{(time%60 if len(str(time%60)) == 2 else "0" + str(time%60))}'
+		ora_inceput = f'{time // 60}:{(time % 60 if len(str(time % 60)) == 2 else "0" + str(time % 60))}'
 		time += lesson
-		ora_sfarsit = f'{time//60}:{(time%60 if len(str(time%60)) == 2 else "0" + str(time%60))}'
+		ora_sfarsit = f'{time // 60}:{(time % 60 if len(str(time % 60)) == 2 else "0" + str(time % 60))}'
 		l_conf.orarul[0][element] = f'{ora_inceput} - {ora_sfarsit}'
 		element += 1
+
 
 # //////////////////////////////////
 

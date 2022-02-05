@@ -229,9 +229,10 @@ class Lessons(commands.Cog):
 		durata_lectiei = 0
 		durata_pauzei = 0
 		durata_pauzei_mare = 0
+		overwrite = ''
 		de_la = datetime.date.today()
 		pana_la = datetime.date.today()
-		starea = 'active'
+		starea = 'custom'
 		settings = args.split(';')
 
 		name = ''
@@ -246,6 +247,9 @@ class Lessons(commands.Cog):
 				durata_pauzei = int(value)
 			elif name == 'pm':
 				durata_pauzei_mare = int(value)
+			elif name == 'ov':
+				pause_index, pause_value = value.split('!')
+				overwrite += f'{pause_index}:{pause_value};'
 			elif name == 'dl':
 				dd, mm, yy = value.split('.')
 				de_la = datetime.date(day=int(dd), month=int(mm), year=int(yy))
@@ -261,8 +265,8 @@ class Lessons(commands.Cog):
 			setting_id = 2
 
 		# Updating
-		keys = ['DurataLectiei', 'DurataPauzei', 'DurataPauzeiMare', 'DeLa', 'PanaLa', 'Starea']
-		values = [durata_lectiei, durata_pauzei, durata_pauzei_mare, de_la, pana_la, starea]
+		keys = ['DurataLectiei', 'DurataPauzei', 'DurataPauzeiMare', 'overwrite', 'DeLa', 'PanaLa', 'Starea']
+		values = [durata_lectiei, durata_pauzei, durata_pauzei_mare, overwrite, de_la, pana_la, starea]
 
 		self.database.connect()
 		self.database.multiple_update('OrarulSunetelor', setting_id, keys, values)
