@@ -58,7 +58,7 @@ def lessons_config_update():
 	custom = vesela_lib.read_rows('OrarulSunetelor', 2, 2)
 	timp = 480
 
-	if custom[0][4] <= datetime.date.today() <= custom[0][5]:
+	if custom[0][5] <= datetime.date.today() <= custom[0][6]:
 		lesson = int(custom[0][1])
 		pause = int(custom[0][2])
 		big_pause = int(custom[0][3])
@@ -73,6 +73,7 @@ def lessons_config_update():
 		timp += lesson
 		ora_sfarsit = f'{timp//60}:{(timp%60 if len(str(timp%60)) == 2 else "0" + str(timp%60))}'
 		l_conf.orarul[0][element] = f'{ora_inceput} - {ora_sfarsit}'
+		timp += pause
 		element += 1
 
 # //////////////////////////////////
@@ -92,7 +93,7 @@ async def on_ready():
 
 	current_date = 0
 	timpul = 0
-	update_times = [0,100, 200, 300, 400, 500, 600, 720]
+	update_times = [0, 100, 200, 300, 400, 500, 600, 673, 720]
 
 	DiscordComponents(client)
 	# Calculating exact time
@@ -109,9 +110,8 @@ async def on_ready():
 			saptamana_v = 'Impara'
 		
 		if timpul in update_times:
-			# lessons_config_update()
-			pass
-
+			lessons_config_update()
+		
 		day = datetime.datetime.utcnow()
 		day += datetime.timedelta(hours=2)
 		timpul = day.hour * 60 + day.minute
